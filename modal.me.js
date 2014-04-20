@@ -211,16 +211,16 @@ var Modal = (function(window, $, undefined){
             var options = boxOptions[id] ? boxOptions[id] : {};
 
             var width = options.width || defaults.width,
-                windowWidth = $(window).width() || 0;
+                winWidth = $(window).width() || 0;
 
             // Defined in pixels;
             if ( width == +width ) {
                 width = width < minWidthPixel ? minWidthPixel : width;
 
-                var fit = width < (windowWidth - 40);
+                var fit = width < (winWidth - 40);
                 
                 $box.css({
-                    width: fit ? width : (windowWidth - 40),
+                    width: fit ? width : (winWidth - 40),
                     left : fit ? '50%' : 20,
                     'margin-left': fit ? (-1 * width)/2 : 0
                 });
@@ -236,7 +236,7 @@ var Modal = (function(window, $, undefined){
 
                     $box.css({
                         width: width + '%',
-                        'margin-left': -1 * (windowWidth*width/200)
+                        'margin-left': -1 * (winWidth*width/200)
                     });
                 }
             }
