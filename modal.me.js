@@ -34,22 +34,37 @@ var Modal = (function(window, $, undefined){
      * Creating DOM elements and adding them to body of the page.
      */
     function createDomElement(id, opts, remote) {
-        var $container = $('<div>').attr({
-            'class': 'modalme modalme-close',
-            'data-id': id
-        }).appendTo('body');
+        var $container = $('<div>')
+            .attr({
+                class: 'modalme modalme-close',
+                'data-id': id
+            })
+            .appendTo('body');
         
-        var $box = $('<div>').attr({'class': 'modalme-body'}).appendTo($container);
+        var $box = $('<div>')
+            .attr({class: 'modalme-body'})
+            .appendTo($container);
 
         if ( opts.title ) {
-            var $header = $('<div>').attr({'class': 'modalme-header'}).html(opts.title).appendTo($box);
-            $('<div>').attr({'class': 'closer modalme-close'}).html('&times;').prependTo($header);
+            var $header = $('<div>')
+                .attr({class: 'modalme-header'})
+                .html(opts.title)
+                .appendTo($box);
+            $('<div>')
+                .attr({class: 'closer modalme-close'})
+                .html('&times;')
+                .prependTo($header);
         } else {
-            $('<div>').attr({'class': 'closer modalme-close'}).html('&times;').appendTo($box);
+            $('<div>')
+                .attr({class: 'closer modalme-close'})
+                .html('&times;')
+                .appendTo($box);
         }
 
         if ( remote ) {
-            return $('<div>').attr({'class': 'modalme-load'}).appendTo($box);
+            return $('<div>')
+                .attr({class: 'modalme-load'})
+                .appendTo($box);
         }
 
         return $box;
@@ -79,7 +94,9 @@ var Modal = (function(window, $, undefined){
      */
     function hide(id) {
         if ( $('.modalme[data-id="' + id + '"]').length ) {
-            $('.modalme[data-id="' + id + '"]').hide().remove();
+            $('.modalme[data-id="' + id + '"]')
+                .hide()
+                .remove();
         }
         pageScroll();
     };
@@ -89,7 +106,9 @@ var Modal = (function(window, $, undefined){
      */
     function hideAll() {
         if ( $('.modalme').length ) {
-            $('.modalme').hide().remove();
+            $('.modalme')
+                .hide()
+                .remove();
         }
         pageScroll();
     };
@@ -151,7 +170,7 @@ var Modal = (function(window, $, undefined){
                 var $box = createDomElement(modalId, options, true);
                 var data = options.data || {};
                 
-                $box.load(options.url,data,function(){
+                $box.load(options.url, data, function() {
                     _this.place(modalId);
                     id = modalId;
                 });
