@@ -34,16 +34,16 @@ var Modal = (function(window, $, undefined){
      * Creating DOM elements and adding them to body of the page.
      */
     function createDomElement(id, opts, remote) {
-        var container = $('<div>').attr({
+        var $container = $('<div>').attr({
             'class': 'modalme modalme-close',
             'data-id': id
         }).appendTo('body');
         
-        var $box = $('<div>').attr({'class': 'modalme-body'}).appendTo(container);
+        var $box = $('<div>').attr({'class': 'modalme-body'}).appendTo($container);
 
         if ( opts.title ) {
-            var header = $('<div>').attr({'class': 'modalme-header'}).html(opts.title).appendTo($box);
-            $('<div>').attr({'class': 'closer modalme-close'}).html('&times;').prependTo(header);
+            var $header = $('<div>').attr({'class': 'modalme-header'}).html(opts.title).appendTo($box);
+            $('<div>').attr({'class': 'closer modalme-close'}).html('&times;').prependTo($header);
         } else {
             $('<div>').attr({'class': 'closer modalme-close'}).html('&times;').appendTo($box);
         }
@@ -148,10 +148,10 @@ var Modal = (function(window, $, undefined){
 
             // Remote content.
             if ( options.url ) {
-                var box = createDomElement(modalId, options, true);
+                var $box = createDomElement(modalId, options, true);
                 var data = options.data || {};
                 
-                box.load(options.url,data,function(){
+                $box.load(options.url,data,function(){
                     _this.place(modalId);
                     id = modalId;
                 });
@@ -159,8 +159,8 @@ var Modal = (function(window, $, undefined){
 
             // Content placed through text attribute.
             else {
-                var box = createDomElement(modalId, options);
-                if ( box.append(options.text) ) {
+                var $box = createDomElement(modalId, options);
+                if ( $box.append(options.text) ) {
                     _this.place(modalId);
                     id = modalId;
                 }
