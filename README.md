@@ -2,6 +2,8 @@
 
 ## Features
 
+[Example](http://itimka.ru)
+
 - They are adaptive.
 - You can create multiple boxes.
 - You can control width of the box.
