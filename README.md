@@ -1,10 +1,9 @@
 # Modal.me.js
 
 Modal-box module.
+* [Example](http://itimka.ru)
 
 ## Features
-
-* [Example](http://itimka.ru)
 
 - They are adaptive.
 - You can create multiple boxes.
