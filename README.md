@@ -1,8 +1,10 @@
 # Modal.me.js
 
+Modal-box module.
+
 ## Features
 
-[Example](http://itimka.ru)
+* [Example](http://itimka.ru)
 
 - They are adaptive.
 - You can create multiple boxes.
@@ -10,7 +12,7 @@
 - Height calculation is based on the contents.
 
 ## Dependencies
-[jQuery](http://jquery.com)
+- [jQuery](http://jquery.com)
 
 ## How to use
 
