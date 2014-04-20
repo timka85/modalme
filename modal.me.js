@@ -187,7 +187,7 @@ var Modal = (function(window, $, undefined){
         
             // Save properties of the box.
             boxOptions[modalId] = {
-                width: options.width ? options.width : this.defaults.width,
+                width: options.width ? options.width : defaults.width,
                 title: options.title ? options.title : '',
             };
         }
@@ -274,7 +274,7 @@ var Modal = (function(window, $, undefined){
     pub.resizeAll = function() {
         if ( boxOptions ) {
             for ( var k in boxOptions ) {
-                if ( isBox(k) ) {
+                if ( k !== undefined && isBox(k) ) {
                     this.resize(k);
                 } else {
                     delete boxOptions[k];
