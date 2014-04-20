@@ -1,0 +1,58 @@
+.modalme {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9991;
+    display: none;
+    position: fixed;
+    overflow: auto;
+    background: rgba(0, 0, 0, 0.2);
+    padding-bottom: 40px;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = #2F000000, endColorstr = #2F000000);
+    zoom: 1;
+    -webkit-overflow-scrolling: touch;
+}
+.modalme-close {
+    cursor: pointer;
+}
+.modalme-body {
+    left: 50%;
+    color: #000;
+    cursor: auto;
+    z-index: 9992;
+    position: relative;
+    text-align: center;
+    background-color: #FCFCFC;
+    -moz-box-shadow: 0 0 4px rgba(0,0,0,0.265);
+    -webkit-box-shadow: 0 0 4px rgba(0,0,0,0.265);
+    box-shadow: 0 0 4px rgba(0,0,0,0.265);
+}
+.modalme-header {
+    color: #FFF;
+    padding: 5px;
+    font-size: 16px;
+    text-align: left;
+    background: #0994BA;
+    border-bottom: 1px solid #DDD;
+}
+.modalme .closer {
+    float: right;
+    color: #000;
+    cursor: pointer;
+    padding: 0 10px;
+    text-align: right;
+    background: rgba(0, 0, 0, 0.2);
+}
+.modalme .closer:hover {
+    color: #FFF;
+    background: rgba(0, 0, 0, 0.4);
+}
+.modalme .closer:active {
+    -moz-box-shadow: 0px 0px 3px 0px #202020 inset;
+    -webkit-box-shadow: 0px 0px 3px 0px #202020 inset;
+    box-shadow: 0px 0px 3px 0px #202020 inset;
+}
+.hidescroll {
+    overflow: hidden;
+}
