@@ -1,8 +1,6 @@
 var Modal = (function(window, $, undefined){
     'use strict';
 
-    var pub = {};
-
     var id = 0,
 
         // Scroll position before opening the box.
@@ -29,6 +27,167 @@ var Modal = (function(window, $, undefined){
             // Is the box a layer.
             layer: false
         };
+
+    var pub = {
+        open: function(options) {
+            var _this = this;
+
+            // Collect options.
+            var options = $.extend(defaults, options);
+
+            // If there is content to show.
+            if ( options.text || options.url ) {
+
+                // Save position of scroll before opening first box.
+                if ( id == 0 ) {
+                    scroll = $(window).scrollTop();
+                }
+
+                // Getting id for new box.
+                var modalId = id + 1;
+
+                // Should we open this box as new layer?
+                var layer = options.layer || false;
+
+                // If it's not a layer than close all boxes opened before.
+                if (! layer ) {
+                    _this.closeAll();
+                }
+
+                // Remote content.
+                if ( options.url ) {
+                    var $box = createDomElement(modalId, options, true);
+                    var data = options.data || {};
+                    
+                    $box.load(options.url, data, function() {
+                        _this.place(modalId);
+                        id = modalId;
+                    });
+                } 
+
+                // Content placed through text attribute.
+                else {
+                    var $box = createDomElement(modalId, options);
+                    if ( $box.append(options.text) ) {
+                        _this.place(modalId);
+                        id = modalId;
+                    }
+                }
+            
+                // Save properties of the box.
+                boxOptions[modalId] = {
+                    width: options.width ? options.width : defaults.width,
+                    title: options.title ? options.title : '',
+                };
+            }
+        },
+
+        /**
+         * Placing the box and showing it.
+         */
+        place: function(id) {
+            show(id);
+            this.posX(id);
+            this.posY(id);
+        },
+
+        /**
+         * Placing box in X-axis.
+         */
+        posX: function(id) {
+            var $box = getBox(id);
+            if ( $box ) {
+                var options = boxOptions[id] ? boxOptions[id] : {};
+
+                var width = options.width || defaults.width,
+                    winWidth = $(window).width() || 0;
+
+                // Defined in pixels;
+                if ( width == +width ) {
+                    width = width < minWidthPixel ? minWidthPixel : width;
+
+                    var fit = width < (winWidth - 40);
+                    
+                    $box.css({
+                        width: fit ? width : (winWidth - 40),
+                        left : fit ? '50%' : 20,
+                        'margin-left': fit ? (-1 * width)/2 : 0
+                    });
+                }
+
+                // Defined in percents;
+                else {
+                    if ( width.indexOf('%') != '-1' ) {
+
+                        width = width.replace('%','');
+                        width = width > maxWidthPercent ? maxWidthPercent : width;
+                        width = width < minWidthPercent ? minWidthPercent : width;
+
+                        $box.css({
+                            width: width + '%',
+                            'margin-left': -1 * (winWidth*width/200)
+                        });
+                    }
+                }
+            }
+        },
+
+        /**
+         * Placing box in Y-axis.
+         */
+        posY: function(id) {
+            var $box = getBox(id);
+
+            if ( $box ) {
+                var boxHeight = $box.height() || 0,
+                    winHeight = $(window).height() || 0,
+                    fit       = boxHeight < (winHeight - 40);
+                $box.css({
+                    top: fit ? 0 : 20,
+                    'margin-top': fit ? (winHeight - boxHeight)/3 : 0
+                });
+            }
+        },
+
+        /**
+         * Resizing box by ID.
+         */
+        resize: function(modalId) {
+            this.posX(modalId);
+            this.posY(modalId);
+        },
+
+        /**
+         * Resize all modal-boxes.
+         */
+        resizeAll: function() {
+            if ( boxOptions ) {
+                for ( var k in boxOptions ) {
+                    if ( k && isBox(k) ) {
+                        this.resize(k);
+                    } else {
+                        delete boxOptions[k];
+                    }
+                }
+            }
+        },
+
+        /**
+         * Close the box.
+         */
+        close: function(modalId) {
+            hide(modalId || id);
+        },
+
+        /**
+         * Close all modal-boxes.
+         */
+        closeAll: function() {
+            hideAll();
+        }
+    };
+
+    // Private functions.
 
     /**
      * Creating DOM elements and adding them to body of the page.
@@ -138,170 +297,13 @@ var Modal = (function(window, $, undefined){
 
             $(window).scrollTop(scroll);
         }
-    }
-
-    pub.open = function(options) {
-        var _this = this;
-
-        // Collect options.
-        var options = $.extend(defaults, options);
-
-        // If there is content to show.
-        if ( options.text || options.url ) {
-
-            // Save position of scroll before opening first box.
-            if ( id == 0 ) {
-                scroll = $(window).scrollTop();
-            }
-
-            // Getting id for new box.
-            var modalId = id + 1;
-
-            // Should we open this box as new layer?
-            var layer = options.layer || false;
-
-            // If it's not a layer than close all boxes opened before.
-            if (! layer ) {
-                _this.closeAll();
-            }
-
-            // Remote content.
-            if ( options.url ) {
-                var $box = createDomElement(modalId, options, true);
-                var data = options.data || {};
-                
-                $box.load(options.url, data, function() {
-                    _this.place(modalId);
-                    id = modalId;
-                });
-            } 
-
-            // Content placed through text attribute.
-            else {
-                var $box = createDomElement(modalId, options);
-                if ( $box.append(options.text) ) {
-                    _this.place(modalId);
-                    id = modalId;
-                }
-            }
-        
-            // Save properties of the box.
-            boxOptions[modalId] = {
-                width: options.width ? options.width : defaults.width,
-                title: options.title ? options.title : '',
-            };
-        }
     };
 
-    /**
-     * Placing the box and showing it.
-     */
-    pub.place = function(id) {
-        show(id);
-        this.posX(id);
-        this.posY(id);
-    };
+    // Events.
 
     /**
-     * Placing box in X-axis.
+     * Close.
      */
-    pub.posX = function(id) {
-        var $box = getBox(id);
-        if ( $box ) {
-            var options = boxOptions[id] ? boxOptions[id] : {};
-
-            var width = options.width || defaults.width,
-                winWidth = $(window).width() || 0;
-
-            // Defined in pixels;
-            if ( width == +width ) {
-                width = width < minWidthPixel ? minWidthPixel : width;
-
-                var fit = width < (winWidth - 40);
-                
-                $box.css({
-                    width: fit ? width : (winWidth - 40),
-                    left : fit ? '50%' : 20,
-                    'margin-left': fit ? (-1 * width)/2 : 0
-                });
-            }
-
-            // Defined in percents;
-            else {
-                if ( width.indexOf('%') != '-1' ) {
-
-                    width = width.replace('%','');
-                    width = width > maxWidthPercent ? maxWidthPercent : width;
-                    width = width < minWidthPercent ? minWidthPercent : width;
-
-                    $box.css({
-                        width: width + '%',
-                        'margin-left': -1 * (winWidth*width/200)
-                    });
-                }
-            }
-        }
-    };
-
-    /**
-     * Placing box in Y-axis.
-     */
-    pub.posY = function(id) {
-        var $box = getBox(id);
-
-        if ( $box ) {
-            var boxHeight = $box.height() || 0,
-                winHeight = $(window).height() || 0,
-                fit       = boxHeight < (winHeight - 40);
-            $box.css({
-                top: fit ? 0 : 20,
-                'margin-top': fit ? (winHeight - boxHeight)/3 : 0
-            });
-        }
-    };
-
-    /**
-     * Resizing box by ID.
-     */
-    pub.resize = function(modalId) {
-        this.posX(modalId);
-        this.posY(modalId);
-    };
-
-    /**
-     * Resize all modal-boxes.
-     */
-    pub.resizeAll = function() {
-        if ( boxOptions ) {
-            for ( var k in boxOptions ) {
-                if ( k && isBox(k) ) {
-                    this.resize(k);
-                } else {
-                    delete boxOptions[k];
-                }
-            }
-        }
-    };
-
-    /**
-     * Close the box.
-     */
-    pub.close = function(modalId) {
-        hide(modalId || id);
-    };
-
-    /**
-     * Close all modal-boxes.
-     */
-    pub.closeAll = function() {
-        hideAll();
-    };
-
-    /**
-     * Events.
-     */
-
-    // Close-button.
     $('body').on('click', '.modalme-close', function(e) {
         var id = $(this).closest('.modalme').data('id') || '';
         if ( $(e.target).hasClass('modalme-close') ) {
@@ -309,7 +311,9 @@ var Modal = (function(window, $, undefined){
         }
     });
 
-    // On window resize we should resize boxes.
+    /**
+     * On window resize we should resize boxex.
+     */
     $(window).on('resize', function() {
         pub.resizeAll();
     });
