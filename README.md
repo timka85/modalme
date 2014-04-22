@@ -1,5 +1,8 @@
 # Modal.me.js
 
+Modal-box module.
+* [Example](http://itimka.ru)
+
 ## Features
 
 - They are adaptive.
@@ -8,7 +11,7 @@
 - Height calculation is based on the contents.
 
 ## Dependencies
-[jQuery](http://jquery.com)
+- [jQuery](http://jquery.com)
 
 ## How to use
 
