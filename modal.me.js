@@ -36,34 +36,34 @@ var Modal = (function(window, $, undefined){
     function createDomElement(id, opts, remote) {
         var $container = $('<div>')
             .attr({
-                class: 'modalme modalme-close',
+                'class': 'modalme modalme-close',
                 'data-id': id
             })
             .appendTo('body');
         
         var $box = $('<div>')
-            .attr({class: 'modalme-body'})
+            .attr({'class': 'modalme-body'})
             .appendTo($container);
 
         if ( opts.title ) {
             var $header = $('<div>')
-                .attr({class: 'modalme-header'})
+                .attr({'class': 'modalme-header'})
                 .html(opts.title)
                 .appendTo($box);
             $('<div>')
-                .attr({class: 'closer modalme-close'})
+                .attr({'class': 'closer modalme-close'})
                 .html('&times;')
                 .prependTo($header);
         } else {
             $('<div>')
-                .attr({class: 'closer modalme-close'})
+                .attr({'class': 'closer modalme-close'})
                 .html('&times;')
                 .appendTo($box);
         }
 
         if ( remote ) {
             return $('<div>')
-                .attr({class: 'modalme-load'})
+                .attr({'class': 'modalme-load'})
                 .appendTo($box);
         }
 
@@ -81,8 +81,8 @@ var Modal = (function(window, $, undefined){
      * Showing the box.
      */
     function show(id){
-        if (! $('body, html').hasClass('hidescroll') ) {
-            $('body, html').addClass('hidescroll');
+        if (! $('html, body').hasClass('hidescroll') ) {
+            $('html, body').addClass('hidescroll');
         }
         if ( $('.modalme[data-id="' + id + '"]').length ) {
             $('.modalme[data-id="' + id + '"]').show();
@@ -274,7 +274,7 @@ var Modal = (function(window, $, undefined){
     pub.resizeAll = function() {
         if ( boxOptions ) {
             for ( var k in boxOptions ) {
-                if ( k !== undefined && isBox(k) ) {
+                if ( k && isBox(k) ) {
                     this.resize(k);
                 } else {
                     delete boxOptions[k];
